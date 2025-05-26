@@ -29,12 +29,12 @@ export class InvestmentsController {
   @UseGuards(JwtAuthGuard)
   async findAll(@GetUser() user: User) {
     // For investors: return their investments
-    if (user.role === UserRole.INVESTOR) {
-      const investments = await this.investmentsService.findByUser(user.id);
-      return investments.map(
-        (investment) => new InvestmentResponseDto(investment),
-      );
-    }
+    // if (user.role === UserRole.INVESTOR) {
+    //   const investments = await this.investmentsService.findByUser(user.id);
+    //   return investments.map(
+    //     (investment) => new InvestmentResponseDto(investment),
+    //   );
+    // }
 
     // For admins: return all investments
     if (user.role === UserRole.ADMIN) {
@@ -61,7 +61,7 @@ export class InvestmentsController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.INVESTOR)
+  // @Roles(UserRole.INVESTOR)
   async create(
     @Body() createInvestmentDto: CreateInvestmentDto,
     @GetUser() user: User,

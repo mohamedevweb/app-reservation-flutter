@@ -1,7 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { IsOptional, IsEnum, IsString, IsNumber, Min, Max } from 'class-validator';
 import { CreateReservationDto } from './create-reservation.dto';
-import { ReservationStatus } from '../entites/reservation.entity';
+import { ReservationStatus } from '../entities/reservation.entity';
 
 export class UpdateReservationDto extends PartialType(CreateReservationDto) {
     @IsOptional()

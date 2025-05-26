@@ -1,6 +1,6 @@
 import { IsString, IsEmail, IsPhoneNumber, IsDateString, IsEnum, IsNumber, IsOptional, Min, Max, IsNotEmpty } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { TimeSlot } from '../entites/reservation.entity';
+import { TimeSlot } from '../entities/reservation.entity';
 
 export class CreateReservationDto {
     @IsString()
@@ -31,6 +31,5 @@ export class CreateReservationDto {
     specialRequests?: string;
 
     @IsOptional()
-    @IsNumber()
     userId?: number;
 }

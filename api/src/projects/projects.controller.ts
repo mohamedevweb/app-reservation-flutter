@@ -50,7 +50,7 @@ export class ProjectsController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ENTREPRENEUR)
+  // @Roles(UserRole.ENTREPRENEUR)
   async create(
     @Body() createProjectDto: CreateProjectDto,
     @GetUser() user: User,

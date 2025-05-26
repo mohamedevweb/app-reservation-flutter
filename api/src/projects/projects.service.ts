@@ -44,9 +44,9 @@ export class ProjectsService {
     createProjectDto: CreateProjectDto,
     user: User,
   ): Promise<Project> {
-    if (user.role !== UserRole.ENTREPRENEUR) {
-      throw new ForbiddenException('Only entrepreneurs can create projects');
-    }
+    // if (user.role !== UserRole.ENTREPRENEUR) {
+    //   throw new ForbiddenException('Only entrepreneurs can create projects');
+    // }
 
     const categories: Interest[] = [];
     if (

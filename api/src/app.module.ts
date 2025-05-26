@@ -10,6 +10,8 @@ import { InterestsModule } from './interests/interests.module';
 import { InvestmentsModule } from './investments/investments.module';
 import { AdminModule } from './admin/admin.module';
 import { databaseConfig } from './config/database.config';
+import { ReservationsModule } from './reservations/reservation.module';
+import { MenuModule } from './menu/menu.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { databaseConfig } from './config/database.config';
     InterestsModule,
     InvestmentsModule,
     AdminModule,
+    ReservationsModule,
+    MenuModule,
   ],
   controllers: [AppController],
   providers: [AppService],

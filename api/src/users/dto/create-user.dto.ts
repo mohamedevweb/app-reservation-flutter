@@ -41,7 +41,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     enum: UserRole,
-    default: UserRole.ENTREPRENEUR,
+    // default: UserRole.ENTREPRENEUR,
     required: false,
     description: "Rôle de l'utilisateur (entrepreneur, investor, admin)",
   })

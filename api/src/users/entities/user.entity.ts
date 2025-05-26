@@ -13,9 +13,11 @@ import { Project } from '../../projects/entities/project.entity';
 import { Investment } from '../../investments/entities/investment.entity';
 
 export enum UserRole {
+  CLIENT = 'client',
+  HOST = 'host',
+  ADMIN = 'admin',
   ENTREPRENEUR = 'entrepreneur',
   INVESTOR = 'investor',
-  ADMIN = 'admin',
 }
 
 @Entity()
@@ -38,7 +40,7 @@ export class User {
   @Column({
     type: 'enum',
     enum: UserRole,
-    default: UserRole.ENTREPRENEUR,
+    default: UserRole.CLIENT,
   })
   role: UserRole;
 

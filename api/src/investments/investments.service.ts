@@ -57,9 +57,9 @@ export class InvestmentsService {
     createInvestmentDto: CreateInvestmentDto,
     user: User,
   ): Promise<Investment> {
-    if (user.role !== UserRole.INVESTOR) {
-      throw new ForbiddenException('Only investors can make investments');
-    }
+    // if (user.role !== UserRole.INVESTOR) {
+    //   throw new ForbiddenException('Only investors can make investments');
+    // }
 
     // Verify project exists
     const project = await this.projectsRepository.findOne({
