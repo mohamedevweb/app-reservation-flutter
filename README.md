@@ -74,7 +74,7 @@ L’application permettra également au personnel (hôte/serveur) de gérer les 
 | Élément            | Choix retenu         |
 | ------------------ | -------------------- |
 | Application mobile | Flutter (Dart ≥ 3.0) |
-| API                | Nest.js avec Express |
+| API                | Nest.js x Fastify |
 | Base de données    | PostgreSQL           |
 | Authentification   | JWT (token simple)   |
 | Notifications      | Email (SMTP)         |
