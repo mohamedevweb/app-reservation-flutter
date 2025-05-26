@@ -49,7 +49,7 @@ export class ReservationsService {
     async findAll(filters?: {
         status?: ReservationStatus;
         date?: string;
-        userId?: number;
+        userId?: string;
         page?: number;
         limit?: number;
     }): Promise<{

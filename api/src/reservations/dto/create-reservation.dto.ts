@@ -1,4 +1,15 @@
-import { IsString, IsEmail, IsPhoneNumber, IsDateString, IsEnum, IsNumber, IsOptional, Min, Max, IsNotEmpty } from 'class-validator';
+import {
+    IsString,
+    IsEmail,
+    IsDateString,
+    IsEnum,
+    IsNumber,
+    IsOptional,
+    Min,
+    Max,
+    IsNotEmpty,
+    IsUUID,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
 import { TimeSlot } from '../entities/reservation.entity';
 
@@ -20,10 +31,10 @@ export class CreateReservationDto {
     @IsEnum(TimeSlot)
     timeSlot: TimeSlot;
 
+    @Transform(({ value }) => parseInt(value))
     @IsNumber()
     @Min(1)
     @Max(20)
-    @Transform(({ value }) => parseInt(value))
     numberOfGuests: number;
 
     @IsOptional()
@@ -31,5 +42,7 @@ export class CreateReservationDto {
     specialRequests?: string;
 
     @IsOptional()
-    userId?: number;
+    @IsUUID()
+    userId?: string;
 }
+  

@@ -77,8 +77,8 @@ export class Reservation {
     @JoinColumn({ name: 'userId' })
     user?: User;
 
-    @Column({ nullable: true })
-    userId?: number;
+    @Column({ type: 'uuid', nullable: true })
+    userId?: string;
 
     @CreateDateColumn()
     createdAt: Date;
