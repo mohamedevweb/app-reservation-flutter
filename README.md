@@ -52,7 +52,7 @@ L’application permettra également au personnel (hôte/serveur) de gérer les 
 * Écran de gestion pour le personnel (back-office)
 * (Optionnel) Authentification client (email/mot de passe)
 
-**API REST (Node.js + Express)**
+**API REST (Nest.js)**
 
 * Endpoints CRUD pour les réservations :
 
