@@ -10,9 +10,11 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import fastifyCors from '@fastify/cors';
 
 async function bootstrap() {
+  const fastifyInstance = new FastifyAdapter();
+
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(),
+    fastifyInstance,
   );
 
   // Active CORS (ajoute cette partie)

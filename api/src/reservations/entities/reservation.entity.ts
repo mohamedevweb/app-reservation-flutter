@@ -32,25 +32,26 @@ export class Reservation {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ name: 'customer_name' })
     customerName: string;
 
-    @Column()
+    @Column({ name: 'customer_email' })
     customerEmail: string;
 
-    @Column()
+    @Column({ name: 'customer_phone' })
     customerPhone: string;
 
-    @Column({ type: 'date' })
+    @Column({ type: 'date' , name: 'reservation_date'})
     reservationDate: Date;
 
     @Column({
         type: 'enum',
         enum: TimeSlot,
+        name: 'time_slot'
     })
     timeSlot: TimeSlot;
 
-    @Column({ type: 'int' })
+    @Column({ type: 'int', name: 'number_of_guests' })
     numberOfGuests: number;
 
     @Column({
@@ -60,16 +61,16 @@ export class Reservation {
     })
     status: ReservationStatus;
 
-    @Column({ type: 'text', nullable: true })
+    @Column({ type: 'text', nullable: true, name: 'special_requests' })
     specialRequests: string;
 
-    @Column({ type: 'text', nullable: true })
+    @Column({ type: 'text', nullable: true,  name: 'admin_notes' })
     adminNotes: string;
 
-    @Column({ type: 'int', nullable: true })
+    @Column({ type: 'int', nullable: true, name: 'table_number' })
     tableNumber: number;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true,  name: 'confirmation_code' })
     confirmationCode: string;
 
     // Relation optionnelle avec l'utilisateur (si connecté)

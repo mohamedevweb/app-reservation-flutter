@@ -48,16 +48,16 @@ export class MenuItem {
     @Column({ type: 'text', nullable: true })
     allergens: string;
 
-    @Column({ default: false })
+    @Column({ default: false, name:'is_vegetarian' })
     isVegetarian: boolean;
 
-    @Column({ default: false })
+    @Column({ default: false, name: 'is_vegan' })
     isVegan: boolean;
 
-    @Column({ default: false })
+    @Column({ default: false, name: 'is_gluten_free' })
     isGlutenFree: boolean;
 
-    @Column({ default: false })
+    @Column({ default: false, name: 'is_spicy' })
     isSpicy: boolean;
 
     @Column({ type: 'int', default: 0 })

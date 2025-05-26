@@ -12,6 +12,7 @@ services:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./populate.psql:/docker-entrypoint-initdb.d/populate.psql  # ✅ Ajout du script
     networks:
       - app-network
     healthcheck:
