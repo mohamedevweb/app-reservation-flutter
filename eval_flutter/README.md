@@ -86,5 +86,5 @@ L’application permettra également au personnel (hôte/serveur) de gérer les 
 * Maquettes ou wireframes (Figma ou outil équivalent)
 * Backlog de user stories (Notion ou Trello)
 * Dépôt GitHub avec README, structure de base et premiers commits
-* Board Trello ou Notion avec répartition des tâches entre les 4 membres
+* Board Trello ou Notion avec répartition des tâches entre les 5 membres
 
