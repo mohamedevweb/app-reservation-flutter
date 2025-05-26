@@ -1,0 +1,21 @@
+| ID   | Rôle               | User Story                                                                                     | Priorité | Statut     |
+|------|--------------------|-----------------------------------------------------------------------------------------------|----------|------------|
+| US1  | Client             | En tant que client, je veux consulter le menu afin de découvrir les plats proposés.           | Haute    | À faire    |
+| US2  | Client             | En tant que client, je veux accéder à une page d’accueil accueillante pour découvrir le lieu. | Moyenne  | À faire    |
+| US3  | Client             | En tant que client, je veux réserver une table avec mes informations pour planifier mon repas.| Haute    | À faire    |
+| US4  | Client             | En tant que client, je veux voir uniquement les horaires disponibles pour éviter les conflits.| Haute    | À faire    |
+| US5  | Client             | En tant que client, je veux recevoir un email de confirmation après ma réservation.           | Haute    | À faire    |
+| US6  | Client             | En tant que client, je veux annuler une réservation si je ne peux plus venir.                 | Moyenne  | À faire    |
+| US7  | Client             | En tant que client, je veux modifier une réservation existante pour ajuster mes plans.        | Moyenne  | À faire    |
+| US8  | Client             | (Optionnel) En tant que client, je veux créer un compte pour retrouver mes réservations.      | Basse    | En attente |
+| US9  | Personnel (hôte)   | En tant que personnel, je veux consulter la liste des réservations du jour pour me préparer.  | Haute    | À faire    |
+| US10 | Personnel (hôte)   | En tant que personnel, je veux valider ou refuser une réservation selon les disponibilités.   | Haute    | À faire    |
+| US11 | Personnel (hôte)   | En tant que personnel, je veux gérer les créneaux horaires disponibles pour organiser le service. | Moyenne | À faire |
+| US12 | Personnel (hôte)   | En tant que personnel, je veux être notifié des nouvelles réservations ou annulations.        | Moyenne  | À faire    |
+| US13 | Personnel (hôte)   | (Optionnel) En tant que personnel, je veux gérer le plan de salle pour organiser les tables.  | Basse    | En attente |
+| US14 | Admin              | En tant qu’admin, je veux ajouter, modifier ou supprimer un plat du menu.                     | Moyenne  | En attente |
+| US15 | Admin              | En tant qu’admin, je veux ajuster les horaires d’ouverture du restaurant.                     | Moyenne  | En attente |
+| US16 | Admin              | En tant qu’admin, je veux gérer les utilisateurs du système (personnel et clients).           | Basse    | En attente |
+| US17 | Admin              | (Optionnel) En tant qu’admin, je veux gérer plusieurs restaurants (multisite).                | Basse    | En attente |
+| US18 | Tous (authentifiés)| En tant qu’utilisateur, je veux me connecter avec email et mot de passe pour accéder à mon espace. | Haute | À faire |
+| US19 | Tous (authentifiés)| En tant qu’utilisateur, je veux me déconnecter en toute sécurité.                             | Moyenne  | À faire    |
