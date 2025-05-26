@@ -1,0 +1,93 @@
+-- USERS TABLE
+CREATE TABLE IF NOT EXISTS users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    firstname VARCHAR(255),
+    lastname VARCHAR(255),
+    role VARCHAR(20) DEFAULT 'client',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- RESERVATIONS TABLE
+CREATE TABLE IF NOT EXISTS reservations (
+    id SERIAL PRIMARY KEY,
+    "customerName" VARCHAR(255) NOT NULL,
+    "customerEmail" VARCHAR(255) NOT NULL,
+    "customerPhone" VARCHAR(255) NOT NULL,
+    "reservationDate" DATE NOT NULL,
+    "timeSlot" VARCHAR(10) NOT NULL,
+    "numberOfGuests" INT NOT NULL CHECK ("numberOfGuests" >= 1 AND "numberOfGuests" <= 20),
+    status VARCHAR(20) DEFAULT 'pending',
+    "specialRequests" TEXT,
+    "adminNotes" TEXT,
+    "tableNumber" INT,
+    "confirmationCode" VARCHAR(255),
+    "userId" UUID REFERENCES users(id) ON DELETE SET NULL,
+    "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- MENU ITEMS TABLE
+CREATE TABLE IF NOT EXISTS menu_items(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    price DECIMAL(8,2) NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    image VARCHAR(255),
+    available BOOLEAN DEFAULT true,
+    ingredients TEXT,
+    allergens TEXT,
+    "isVegetarian" BOOLEAN DEFAULT false,
+    "isVegan" BOOLEAN DEFAULT false,
+    "isGlutenFree" BOOLEAN DEFAULT false,
+    "isSpicy" BOOLEAN DEFAULT false,
+    "preparationTime" INT DEFAULT 0,
+    calories INT DEFAULT 0,
+    "sortOrder" INT DEFAULT 0,
+    "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Skip user insertion since they probably already exist
+-- Uncomment if needed:
+-- INSERT INTO users (id, email, password, firstname, lastname, role)
+-- VALUES 
+--   (gen_random_uuid(), 'admin@mail.com', 'hashed-password', 'Alice', 'Admin', 'admin'),
+--   (gen_random_uuid(), 'investor@mail.com', 'hashed-password', 'Luc', 'Investisseur', 'investor'),
+--   (gen_random_uuid(), 'entrepreneur@mail.com', 'hashed-password', 'Sophie', 'StartUp', 'entrepreneur');
+
+-- Client no-show
+-- Note: Double quotes around column names with camel case
+INSERT INTO reservations (
+  id, "customerName", "customerEmail", "customerPhone", "reservationDate", "timeSlot", "numberOfGuests",
+  status, "specialRequests"
+) VALUES (
+  DEFAULT, 'Paul Dupont', 'paul@mail.com', '0601020304', '2025-06-01', '19:00', 2,
+  'no_show', 'Aucune allergie connue'
+);
+
+-- Client confirmé avec table attribuée
+INSERT INTO reservations (
+  id, "customerName", "customerEmail", "customerPhone", "reservationDate", "timeSlot", "numberOfGuests",
+  status, "tableNumber", "confirmationCode", "specialRequests"
+) VALUES (
+  DEFAULT, 'Anna Leroy', 'anna@mail.com', '0702030405', '2025-06-02', '20:00', 4,
+  'confirmed', 12, 'CONF20250602A', 'Aucune précision'
+);
+
+-- Boissons
+INSERT INTO menu_items (
+  name, description, price, category, available, ingredients
+) VALUES
+  ('Jus orange frais', 'Pur jus pressé à froid', 3.50, 'beverage', true, 'Oranges fraîches'),
+  ('Coca-Cola', 'Soda pétillant 33cl', 2.50, 'beverage', true, 'Eau gazéifiée, sucre, colorant caramel');
+
+-- Plats principaux
+INSERT INTO menu_items (
+  name, description, price, category, available, "isVegetarian", "isVegan", "isGlutenFree", "isSpicy", calories
+) VALUES
+  ('Curry de légumes', 'Curry thaï aux légumes et lait de coco', 11.90, 'vegan', true, true, true, true, true, 540),
+  ('Burger maison', 'Boeuf, cheddar, oignons caramélisés', 13.90, 'meat', true, false, false, false, false, 950),
+  ('Pâtes sans gluten', 'Pâtes au pesto, sans gluten', 10.90, 'pasta', true, true, false, true, false, 600);

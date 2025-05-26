@@ -7,22 +7,23 @@ import {
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import fastifyCors from '@fastify/cors';
 
 async function bootstrap() {
   const fastifyInstance = new FastifyAdapter();
+
+  // Configurer CORS avant de créer l'application
+  fastifyInstance.enableCors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+    exposedHeaders: ['Authorization'],
+    credentials: true,
+  });
 
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     fastifyInstance,
   );
-
-  // Active CORS (ajoute cette partie)
-  await app.register(fastifyCors, {
-    origin: '*', // ou spécifie précisément ton domaine en production
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  });
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 

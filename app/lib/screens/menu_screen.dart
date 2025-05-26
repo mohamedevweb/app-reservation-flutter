@@ -1,7 +1,105 @@
 import 'package:flutter/material.dart';
+import '../models/menu_item.dart';
+import '../services/api_service.dart';
 
-class MenuScreen extends StatelessWidget {
+class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
+
+  @override
+  State<MenuScreen> createState() => _MenuScreenState();
+}
+
+class _MenuScreenState extends State<MenuScreen> {
+  late Future<List<MenuItem>> _menuItemsFuture;
+  bool _isLoading = true;
+  String? _errorMessage;
+  List<MenuCategory> _categories = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMenuItems();
+  }
+
+  Future<void> _loadMenuItems() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      _menuItemsFuture = ApiService.getMenuItems();
+      final menuItems = await _menuItemsFuture;
+
+      // Filtrer pour n'afficher que les éléments disponibles
+      final availableMenuItems =
+          menuItems.where((item) => item.available).toList();
+
+      if (availableMenuItems.isEmpty) {
+        setState(() {
+          _isLoading = false;
+          _categories = [];
+        });
+      } else {
+        _categories = ApiService.groupMenuItemsByCategory(availableMenuItems);
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      print('Erreur lors du chargement du menu: $e');
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Erreur lors du chargement du menu: $e';
+      });
+    }
+  }
+
+  Widget _buildErrorWidget() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, color: Colors.red, size: 60),
+            const SizedBox(height: 16),
+            Text(
+              _errorMessage ?? 'Une erreur est survenue',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _loadMenuItems,
+              child: const Text('Réessayer'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyMenuWidget() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.restaurant_menu, size: 60, color: Colors.grey),
+          const SizedBox(height: 16),
+          const Text(
+            'Aucun plat disponible pour le moment',
+            style: TextStyle(fontSize: 18),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: _loadMenuItems,
+            child: const Text('Actualiser'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -9,119 +107,65 @@ class MenuScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Notre Menu'),
         backgroundColor: Theme.of(context).colorScheme.primary,
-      ),
-      body: ListView(
-        children: [
-          _buildMenuSection(
-            context,
-            'Entrées',
-            [
-              _MenuItem(
-                name: 'Salade de chèvre chaud',
-                description: 'Mesclun, toast de chèvre, miel, noix',
-                price: '9,50 €',
-              ),
-              _MenuItem(
-                name: 'Carpaccio de saumon',
-                description: 'Saumon frais, huile d\'olive, citron',
-                price: '12,00 €',
-              ),
-              _MenuItem(
-                name: 'Velouté de saison',
-                description: 'Légumes de saison, crème fraîche',
-                price: '8,00 €',
-              ),
-            ],
-          ),
-          _buildMenuSection(
-            context,
-            'Plats',
-            [
-              _MenuItem(
-                name: 'Filet de dorade royale',
-                description: 'Purée de patate douce, sauce vierge',
-                price: '18,50 €',
-              ),
-              _MenuItem(
-                name: 'Suprême de volaille fermière',
-                description: 'Risotto aux champignons, jus de volaille',
-                price: '16,00 €',
-              ),
-              _MenuItem(
-                name: 'Pavé de bœuf grillé',
-                description: 'Pommes grenailles, sauce béarnaise',
-                price: '22,00 €',
-              ),
-              _MenuItem(
-                name: 'Risotto aux légumes de saison',
-                description: 'Asperges, petits pois, parmesan',
-                price: '14,50 €',
-              ),
-            ],
-          ),
-          _buildMenuSection(
-            context,
-            'Desserts',
-            [
-              _MenuItem(
-                name: 'Tiramisu maison',
-                description: 'Biscuit, mascarpone, café, cacao',
-                price: '7,00 €',
-              ),
-              _MenuItem(
-                name: 'Fondant au chocolat',
-                description: 'Chocolat noir, cœur coulant, glace vanille',
-                price: '8,50 €',
-              ),
-              _MenuItem(
-                name: 'Assiette de fromages affinés',
-                description: 'Sélection de trois fromages, mesclun',
-                price: '9,00 €',
-              ),
-            ],
-          ),
-          _buildMenuSection(
-            context,
-            'Boissons',
-            [
-              _MenuItem(
-                name: 'Eau minérale (50cl)',
-                description: 'Plate ou gazeuse',
-                price: '3,50 €',
-              ),
-              _MenuItem(
-                name: 'Soda (33cl)',
-                description: 'Cola, limonade, thé glacé',
-                price: '4,00 €',
-              ),
-              _MenuItem(
-                name: 'Verre de vin',
-                description: 'Rouge, blanc ou rosé',
-                price: '5,00 €',
-              ),
-            ],
-          ),
-          const SizedBox(height: 16.0),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/reservation');
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Colors.white,
-              ),
-              child: const Text('Réserver une table'),
-            ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _loadMenuItems,
+            tooltip: 'Actualiser le menu',
           ),
         ],
       ),
+      body:
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : _errorMessage != null
+              ? _buildErrorWidget()
+              : _categories.isEmpty
+              ? _buildEmptyMenuWidget()
+              : ListView(
+                children: [
+                  ..._categories
+                      .map(
+                        (category) => _buildMenuSection(
+                          context,
+                          category.name,
+                          category.items
+                              .map(
+                                (item) => _MenuItem(
+                                  name: item.name,
+                                  description: item.description,
+                                  price: item.price,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      )
+                      .toList(),
+                  const SizedBox(height: 16.0),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/reservation');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text('Réserver une table'),
+                    ),
+                  ),
+                ],
+              ),
     );
   }
 
-  Widget _buildMenuSection(BuildContext context, String title, List<_MenuItem> items) {
+  Widget _buildMenuSection(
+    BuildContext context,
+    String title,
+    List<_MenuItem> items,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -131,10 +175,7 @@ class MenuScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
           child: Text(
             title,
-            style: const TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
         ),
         ...items.map((item) => _buildMenuItem(item)).toList(),
@@ -144,7 +185,10 @@ class MenuScreen extends StatelessWidget {
 
   Widget _buildMenuItem(_MenuItem item) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: 16.0,
+        vertical: 8.0,
+      ),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,10 +199,7 @@ class MenuScreen extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.w600),
             ),
           ),
-          Text(
-            item.price,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
+          Text(item.price, style: const TextStyle(fontWeight: FontWeight.bold)),
         ],
       ),
       subtitle: Padding(
