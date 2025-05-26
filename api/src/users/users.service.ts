@@ -40,7 +40,6 @@ export class UsersService {
     const newUser = this.usersRepository.create({
       ...createUserDto,
       password: hashedPassword,
-      interests: [],
     });
 
     return this.usersRepository.save(newUser);

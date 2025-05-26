@@ -8,9 +8,6 @@ import {
   JoinTable,
   OneToMany,
 } from 'typeorm';
-import { Interest } from '../../interests/entities/interest.entity';
-import { Project } from '../../projects/entities/project.entity';
-import { Investment } from '../../investments/entities/investment.entity';
 
 export enum UserRole {
   CLIENT = 'client',
@@ -43,16 +40,6 @@ export class User {
     default: UserRole.CLIENT,
   })
   role: UserRole;
-
-  @ManyToMany(() => Interest, { eager: true })
-  @JoinTable()
-  interests: Interest[];
-
-  @OneToMany(() => Project, (project) => project.owner)
-  projects: Project[];
-
-  @OneToMany(() => Investment, (investment) => investment.investor)
-  investments: Investment[];
 
   @CreateDateColumn()
   createdAt: Date;

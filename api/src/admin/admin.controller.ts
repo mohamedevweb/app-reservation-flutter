@@ -14,7 +14,6 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { UserRole } from '../users/entities/user.entity';
 import { UserResponseDto } from '../users/dto/user-response.dto';
-import { InvestmentResponseDto } from '../investments/dto/investment-response.dto';
 
 @Controller('admin')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -33,13 +32,5 @@ export class AdminController {
   async deleteUser(@Param('id') id: string) {
     await this.adminService.deleteUser(id);
     return { success: true };
-  }
-
-  @Get('investments')
-  async getAllInvestments() {
-    const investments = await this.adminService.getAllInvestments();
-    return investments.map(
-      (investment) => new InvestmentResponseDto(investment),
-    );
   }
 }

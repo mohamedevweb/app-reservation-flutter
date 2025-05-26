@@ -18,7 +18,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Plateforme Entrepreneur API')
-    .setDescription('API pour connecter entrepreneurs et investisseurs')
+    .setDescription('API pour connecter essssntrepreneurs et investisseurs')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
