@@ -74,7 +74,7 @@ L’application permettra également au personnel (hôte/serveur) de gérer les 
 | Élément            | Choix retenu         |
 | ------------------ | -------------------- |
 | Application mobile | Flutter (Dart ≥ 3.0) |
-| API                | Node.js avec Express |
+| API                | Nest.js avec Express |
 | Base de données    | PostgreSQL           |
 | Authentification   | JWT (token simple)   |
 | Notifications      | Email (SMTP)         |
