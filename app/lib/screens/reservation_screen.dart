@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class ReservationScreen extends StatefulWidget {
   const ReservationScreen({super.key});
@@ -70,7 +72,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
     return false;
   }
 
-  void _submitReservation() {
+
+  void _submitReservation() async {
     if (_formKey.currentState!.validate()) {
       if (!_isValidTimeSlot(_selectedTime)) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -82,42 +85,62 @@ class _ReservationScreenState extends State<ReservationScreen> {
         return;
       }
 
-      // Simuler l'envoi de la réservation
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) {
-          return const AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CircularProgressIndicator(),
-                SizedBox(height: 16),
-                Text('Envoi de votre réservation...'),
-              ],
-            ),
-          );
-        },
+        builder: (context) => const AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 16),
+              Text('Envoi de votre réservation...'),
+            ],
+          ),
+        ),
       );
 
-      // Simuler un délai réseau
-      Future.delayed(const Duration(seconds: 2), () {
-        Navigator.pop(context); // Fermer la boîte de dialogue
+      final reservationData = {
+        "customerName": _nameController.text,
+        "customerPhone": _phoneController.text,
+        "customerEmail": _emailController.text,
+        "reservationDate": _selectedDate.toIso8601String(),
+        "timeSlot": "${_selectedTime.hour.toString().padLeft(2, '0')}:${_selectedTime.minute.toString().padLeft(2, '0')}",
+        "numberOfGuests": _numberOfGuests,
+      };
 
-        // Naviguer vers la confirmation
-        Navigator.pushNamed(
-          context,
-          '/confirmation',
-          arguments: {
-            'name': _nameController.text,
-            'phone': _phoneController.text,
-            'email': _emailController.text,
-            'date': _selectedDate,
-            'time': _selectedTime,
-            'guests': _numberOfGuests,
-          },
+      try {
+        final response = await http.post(
+          Uri.parse('http://localhost:3000/reservation'),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(reservationData),
         );
-      });
+
+        Navigator.pop(context);
+
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          Navigator.pushNamed(
+            context,
+            '/confirmation',
+            arguments: reservationData,
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Erreur lors de la réservation : ${response.body}'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } catch (error) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur réseau : $error'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 

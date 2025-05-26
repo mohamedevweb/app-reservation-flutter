@@ -7,12 +7,20 @@ import {
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import fastifyCors from '@fastify/cors';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
   );
+
+  // Active CORS (ajoute cette partie)
+  await app.register(fastifyCors, {
+    origin: '*', // ou spécifie précisément ton domaine en production
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  });
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
@@ -28,4 +36,5 @@ async function bootstrap() {
   await app.listen(3000, '0.0.0.0');
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
+
 bootstrap();
