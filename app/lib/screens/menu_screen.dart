@@ -142,20 +142,6 @@ class _MenuScreenState extends State<MenuScreen> {
                       )
                       .toList(),
                   const SizedBox(height: 16.0),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/reservation');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        foregroundColor: Colors.white,
-                      ),
-                      child: const Text('Réserver une table'),
-                    ),
-                  ),
                 ],
               ),
     );
